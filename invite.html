@@ -66,8 +66,19 @@
       background: linear-gradient(135deg, #d4c5b9 0%, #c9b8a8 100%);
       border-radius: 8px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-      overflow: visible;
+      overflow: hidden;
       z-index: 1;
+    }
+
+    .envelope.open {
+      overflow: visible;
+      animation: allowOverflow 0.1s linear 1.7s forwards;
+    }
+
+    @keyframes allowOverflow {
+      to {
+        overflow: visible;
+      }
     }
 
     .envelope::before {
@@ -119,7 +130,7 @@
 
     .invite-card {
       position: absolute;
-      bottom: 20px;
+      bottom: -550px;
       left: 50%;
       transform: translateX(-50%);
       max-width: 500px;
@@ -130,16 +141,16 @@
       box-shadow: var(--shadow-soft);
       padding: 32px 28px 30px;
       text-align: center;
-      animation: slideOutOfEnvelope 2s ease-out 1.5s forwards;
+      animation: slideOutOfEnvelope 2.5s ease-out 1.7s forwards;
       z-index: 50;
     }
 
     @keyframes slideOutOfEnvelope {
       0% {
-        bottom: 20px;
+        bottom: -550px;
       }
       100% {
-        bottom: 320px;
+        bottom: 200px;
       }
     }
 
@@ -299,12 +310,16 @@
         width: calc(100% - 30px);
       }
 
+      .invite-card {
+        bottom: -500px;
+      }
+
       @keyframes slideOutOfEnvelope {
         0% {
-          bottom: 20px;
+          bottom: -500px;
         }
         100% {
-          bottom: 280px;
+          bottom: 180px;
         }
       }
 
@@ -357,7 +372,7 @@
 <body>
   <div class="invite-page">
     <div class="envelope-wrapper">
-      <div class="envelope">
+      <div class="envelope open">
         <div class="envelope-flap"></div>
       </div>
       <div class="invite-card">
