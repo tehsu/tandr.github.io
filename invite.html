@@ -68,11 +68,12 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
       overflow: hidden;
       z-index: 1;
+      transform-style: preserve-3d;
     }
 
     .envelope.open {
       overflow: visible;
-      animation: allowOverflow 0.1s linear 1.7s forwards;
+      animation: allowOverflow 0.1s linear 1.5s forwards;
     }
 
     @keyframes allowOverflow {
@@ -98,39 +99,42 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 200px;
-      background: linear-gradient(135deg, #c9b8a8 0%, #b8a393 100%);
+      height: 0;
+      border-left: 270px solid transparent;
+      border-right: 270px solid transparent;
+      border-top: 180px solid #c9b8a8;
       transform-origin: top center;
-      clip-path: polygon(0 0, 50% 60%, 100% 0);
       z-index: 100;
-      animation: openFlap 1.2s ease-out 0.5s forwards;
+      transition: transform 1.2s ease-out 0.3s;
     }
 
-    .envelope-flap::after {
-      content: "";
+    .envelope-flap.open {
+      transform: rotateX(-180deg);
+    }
+
+    .envelope-back {
       position: absolute;
       top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80px;
-      height: 80px;
-      background: rgba(181, 131, 141, 0.15);
-      border-radius: 50%;
-      margin-top: 40px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #d4c5b9 0%, #c9b8a8 100%);
+      z-index: 0;
     }
 
-    @keyframes openFlap {
-      0% {
-        transform: rotateX(0deg);
-      }
-      100% {
-        transform: rotateX(-180deg);
-      }
+    .envelope-front {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60%;
+      background: linear-gradient(135deg, #c9b8a8 0%, #b8a393 100%);
+      z-index: 2;
     }
 
     .invite-card {
       position: absolute;
-      bottom: -550px;
+      bottom: 30px;
       left: 50%;
       transform: translateX(-50%);
       max-width: 500px;
@@ -141,17 +145,12 @@
       box-shadow: var(--shadow-soft);
       padding: 32px 28px 30px;
       text-align: center;
-      animation: slideOutOfEnvelope 2.5s ease-out 1.7s forwards;
+      transition: bottom 2s ease-out 1.5s;
       z-index: 50;
     }
 
-    @keyframes slideOutOfEnvelope {
-      0% {
-        bottom: -550px;
-      }
-      100% {
-        bottom: 200px;
-      }
+    .invite-card.slide-out {
+      bottom: 250px;
     }
 
     .invite-monogram {
@@ -301,26 +300,20 @@
       }
 
       .envelope-flap {
-        height: 160px;
+        border-left: 200px solid transparent;
+        border-right: 200px solid transparent;
+        border-top: 140px solid #c9b8a8;
       }
 
       .invite-card {
         padding: 24px 18px 22px;
         border-radius: 20px;
         width: calc(100% - 30px);
+        bottom: 30px;
       }
 
-      .invite-card {
-        bottom: -500px;
-      }
-
-      @keyframes slideOutOfEnvelope {
-        0% {
-          bottom: -500px;
-        }
-        100% {
-          bottom: 180px;
-        }
+      .invite-card.slide-out {
+        bottom: 200px;
       }
 
       .invite-names {
@@ -373,9 +366,11 @@
   <div class="invite-page">
     <div class="envelope-wrapper">
       <div class="envelope open">
-        <div class="envelope-flap"></div>
+        <div class="envelope-back"></div>
+        <div class="envelope-flap open"></div>
+        <div class="envelope-front"></div>
       </div>
-      <div class="invite-card">
+      <div class="invite-card slide-out">
       <div class="invite-monogram">R &amp; T</div>
       <div class="invite-eyebrow">We’re getting married</div>
 
