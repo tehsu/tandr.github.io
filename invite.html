@@ -43,9 +43,73 @@
       align-items: center;
       justify-content: center;
       padding: 32px 16px;
+      perspective: 1000px;
+    }
+
+    .envelope-wrapper {
+      position: relative;
+      max-width: 540px;
+      width: 100%;
+    }
+
+    .envelope {
+      position: relative;
+      width: 100%;
+      height: 380px;
+      background: linear-gradient(135deg, #d4c5b9 0%, #c9b8a8 100%);
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+    }
+
+    .envelope::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .envelope-flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg, #c9b8a8 0%, #b8a393 100%);
+      transform-origin: top center;
+      clip-path: polygon(0 0, 50% 60%, 100% 0);
+      z-index: 10;
+      animation: openFlap 1.2s ease-out 0.5s forwards;
+    }
+
+    .envelope-flap::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 80px;
+      background: rgba(181, 131, 141, 0.15);
+      border-radius: 50%;
+      margin-top: 40px;
+    }
+
+    @keyframes openFlap {
+      0% {
+        transform: rotateX(0deg);
+      }
+      100% {
+        transform: rotateX(-180deg);
+      }
     }
 
     .invite-card {
+      position: relative;
       max-width: 540px;
       width: 100%;
       background: var(--bg-soft);
@@ -54,6 +118,24 @@
       box-shadow: var(--shadow-soft);
       padding: 32px 28px 30px;
       text-align: center;
+      transform: translateY(0);
+      animation: slideOut 1.5s ease-out 1.2s forwards;
+      z-index: 5;
+    }
+
+    @keyframes slideOut {
+      0% {
+        transform: translateY(0);
+        opacity: 0.95;
+      }
+      100% {
+        transform: translateY(-420px);
+        opacity: 1;
+      }
+    }
+
+    .invite-card.animated {
+      animation: slideOut 1.5s ease-out 1.2s forwards;
     }
 
     .invite-monogram {
@@ -194,10 +276,30 @@
 
     /* Small screens */
     @media (max-width: 480px) {
+      .envelope {
+        height: 320px;
+      }
+
+      .envelope-flap {
+        height: 160px;
+      }
+
       .invite-card {
         padding: 24px 18px 22px;
         border-radius: 20px;
       }
+
+      @keyframes slideOut {
+        0% {
+          transform: translateY(0);
+          opacity: 0.95;
+        }
+        100% {
+          transform: translateY(-360px);
+          opacity: 1;
+        }
+      }
+
       .invite-names {
         font-size: 1.85rem;
       }
@@ -219,12 +321,19 @@
         align-items: stretch;
       }
 
+      .envelope,
+      .envelope-flap {
+        display: none !important;
+      }
+
       .invite-card {
         box-shadow: none;
         border-radius: 0;
         border: 1px solid #dddddd;
         max-width: none;
         width: 100%;
+        animation: none !important;
+        transform: none !important;
       }
 
       .rsvp-button {
@@ -239,7 +348,11 @@
 </head>
 <body>
   <div class="invite-page">
-    <div class="invite-card">
+    <div class="envelope-wrapper">
+      <div class="envelope">
+        <div class="envelope-flap"></div>
+      </div>
+      <div class="invite-card">
       <div class="invite-monogram">R &amp; T</div>
       <div class="invite-eyebrow">We’re getting married</div>
 
@@ -289,6 +402,7 @@
       </p>
 
       <p class="footer-small">© 2025 Raiyan &amp; Tehseen</p>
+      </div>
     </div>
   </div>
 </body>
